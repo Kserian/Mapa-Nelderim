@@ -573,7 +573,7 @@ const cityIcon = L.icon({ iconUrl: 'Gump 30564.png', iconSize: [32, 32], iconAnc
 const dungeonIcon = L.icon({ iconUrl: 'Gump 9804.png', iconSize: [27, 20], iconAnchor: [13, 10] });
 const villageIcon = L.icon({ iconUrl: 'Gump 30565.png', iconSize: [28, 28], iconAnchor: [14, 14] });
 const healerIcon = L.icon({ iconUrl: 'Gump 30560.png', iconSize: [24, 24], iconAnchor: [12, 12] });
-const ankhIcon = L.icon({ iconUrl: 'Gump 30561.png', iconSize: [24, 24], iconAnchor: [12, 12] });
+const ankhIcon = L.icon({ iconUrl: 'ankh.png', iconSize: [16, 26], iconAnchor: [8, 13] });
 
 const cityData = {
   tasandora: [1418, 1872, "Tasandora"],
@@ -598,6 +598,7 @@ const dungeonData = {
   hallTorech: [3614, 1989, "Hall Torech"],
   hurengrav: [1006, 2717, "Hurengrav"],
   jaskiniaBlyskow: [3384, 1955, "Jaskinia Błysków"],
+  jaskiniaMelisande: [3284, 1895, "Jaskinia Melisande"],
   kanalyTasandory: [1311, 2000, "Kanały Tasandory"],
   krolewskieKrypty: [823, 575, "Królewskie Krypty"],
   krysztalowaJaskinia: [3384, 1954, "Kryształowa Jaskinia"],
@@ -608,6 +609,7 @@ const dungeonData = {
   lezePluskwy: [3942, 2299, "Leże Pluskwy"],
   lezeTrolli: [421, 1427, "Leże Trolli"],
   lochBagusa: [678, 1218, "Loch Bagusa"],
+  lochBialegoWilka: [3769, 678, "Loch Białego Wilka"],
   lochOphidian: [2053, 3462, "Loch Ophidian"],
   loenTorech: [3409, 1629, "Loen Torech"],
   mechanicznaKrypta: [2472, 2886, "Mechaniczna Krypta"],
@@ -658,8 +660,67 @@ const customHealers = {};
 const healersSubgroup = document.getElementById("healersSubgroup");
 
 const ankhData = {
-  orodAnkh: [690, 230, "Ankh – Orod"],
-  garlanAnkh: [1170, 360, "Ankh – Garlan"]
+  AnkhAlcala: [678, 1646, "Alcala"],
+  AnkhAlcala2: [635, 1593, "Alcala Ogrody"],
+  AnkhAlcala3: [737, 1455, "Alcala Ołtarz"],
+  AnkhEdhil: [2941, 977, "Edhil"],
+  AnkhEdhil2: [3565, 1173, "Edhil II"],
+  AnkhFortMalvenAnnon: [2357, 1944, "Brama Malven-Annon"],
+  AnkhGarlanArena: [1031, 685, "Garlan Arena"],
+  AnkhGarthPodziemia: [5984, 41, "Garth Podziemia"],
+  AnkhGeriador: [198, 863, "Geriador"],
+  AnkhGrobowceLotharn: [1939, 600, "Grobowce Lotharn"],
+  AnkhGrobowceNaurow: [2446, 2934, "Grobowce Naurów"],
+  AnkhHurengrav: [1014, 2711, "Hurengrav"],
+  AnkhImloth: [3056, 646, "Imloth"],
+  AnkhJaskiniaBlyskow: [3388, 1955, "Jaskinia Błysków"],
+  AnkhKrolwewskieKrypty: [832, 571, "Królewskie Krypty"],
+  AnkhKryjowkaPrzemytnikow: [2082, 3425, "Kryjówka Przemytników"],
+  AnkhKrysztalowaJaskinia: [3823, 1787, "Kryształowa Jaskinia"],
+  AnkhLabirynt: [2786, 1952, "Labirynt"],
+  AnkhLezeLodowychSmokow: [366, 887, "Leże Lodowych Smoków"],
+  AnkhLezeOgnistychSmokow: [5717, 1994, "Leże Ognistych Smoków"],
+  AnkhLezePluskwy: [5589, 244, "Leże Pluskwy"],
+  AnkhLezekrysztalowychSmokow: [360, 1202, "Leże Kryształowych Smoków"],
+  AnkhLochBaronowej: [5231, 208, "Loch Baronowej"],
+  AnkhLochBialegoWilka: [3762, 680, "Loch Białego Wilka"],
+  AnkhLochOphidian: [2786, 1952, "Loch Ophidian"],
+  AnkhLDelmah: [5379, 1963, "Świątynia Loethe L'Delmah"],
+  AnkhLoenTorech: [3403, 1631, "Loen Torech"],
+  AnkhLotharn: [1891, 488, "Lotharn"],
+  AnkhMrowisko: [3677, 1672, "Mrowisko"],
+  AnkhNoamuthQuortek: [5943, 356, "Noamuth Quortek"],
+  AnkhOkoliceBaraddur: [1322, 1106, "Okolice Barad-dur"],
+  AnkhOrda: [2444, 2872, "Orda"],
+  AnkhPedanin: [2941, 977, "Pedanin"],
+  AnkhPiramida: [2428, 2387, "Piramida"],
+  AnkhPlytkiPodmrok1: [5853, 2941, "Płytki Podmrok"],
+  AnkhPlytkiPodmrok2: [5224, 2718, "Płytki Podmrok II"],
+  AnkhPodmrok: [5389, 3921, "Głęboki Podmrok"],
+  AnkhPodmrok2: [5914, 4028, "Głęboki Podmrok II"],
+  AnkhPodmrok3: [5256, 3197, "Głęboki Podmrok III"],
+  AnkhPodmrok4: [5944, 3652, "Głęboki Podmrok IV"],
+  AnkhPodmrok5: [5449, 3546, "Głęboki Podmrok V"],
+  AnkhPodmrok6: [6018, 3448, "Głęboki Podmrok VI"],
+  AnkhPodziemiaSaew: [5208, 1632, "Podziemia Saew"],
+  AnkhPokracznyLoch: [3964, 1046, "Pokraczny Loch"],
+  AnkhPolnoc: [3373, 948, "Daleka Północ"],
+  AnkhSaew: [1361, 637, "Saew"],
+  AnkhSiedzibaDemonow: [3825, 1624, "Siedziba Demonów"],
+  AnkhSwiatyniaHirneth: [5890, 1235, "Świątynia Matki - Hirneth"],
+  AnkhSwiatyniaPanaGarlan: [1013, 523, "Świątynia Pana Garlan"],
+  AnkhSwiatyniaPanaTasandora: [1295, 1841, "Świątynia Pana Tasandora"],
+  AnkhSwiatyniaSmierciTasandora: [5408, 1468, "Światynia Śmierci Tasandora"],
+  AnkhThila: [2967, 2658, "Thila"],
+  AnkhTwierdza: [5597, 1077, "Twierdza"],
+  AnkhTwierdzaLoch: [5505, 1441, "Twierdza Loch"],
+  AnkhTwierdzaZwiednietejRozy: [2182, 1636, "Twierdza Zwiędniętej Rózy"],
+  AnkhUlnhyrOrbben: [1557, 2716, "Ulnhyr Orbben"],
+  AnkhVelkynAto: [5433, 3754, "Velkyn Ato"],
+  AnkhWulkan: [576, 1280, "Wulkan"],
+  AnkhWyspaGeriador: [210, 635, "Śnieżna Wyspa"],
+  AnkhWyspaVoxPopuli: [4110, 3782, "Wyspa Vox Populi"],
+  JaskiniaMelisande: [3279, 1897, "Jaskinia Melisande"]
 };
 
 const customAnkh = {};

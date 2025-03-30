@@ -17,6 +17,7 @@
       background: url('https://www.transparenttextures.com/patterns/old-map.png') repeat #0a0a0a;
       color: #f5f0e6;
       overflow: hidden;
+      cursor: inherit;
     }
   
     #mainLayout {
@@ -239,10 +240,6 @@
       }
     }
   
-    .leaflet-container {
-      background-color: #0a0a0a !important;
-    }
-  
     .leaflet-popup-content-wrapper {
       background: none;
       background-image: url('Gump 1588.png');
@@ -390,6 +387,22 @@
   filter: drop-shadow(0 0 8px #b08e53);
   cursor: pointer;
 }
+
+.leaflet-container {
+  background-color: #0a0a0a !important;
+  cursor: inherit !important;
+}
+
+*{
+  cursor: inherit !important;
+}
+
+#searchBox,
+input[type="text"],
+textarea {
+  cursor: url('text-cursor.png') 10 16, text !important;
+}
+
 
   </style>
 </head>
@@ -1127,5 +1140,76 @@ toggleBtn.addEventListener('click', () => {
 });
 
 </script>
+
+<script>
+
+
+  const cursors = {
+    n:  { file: 'glove-n.png',  hotspot: [16, 4] },
+    ne: { file: 'glove-ne.png', hotspot: [25, 8] },
+    e:  { file: 'glove-e.png',  hotspot: [35, 14] },
+    se: { file: 'glove-se.png', hotspot: [25, 25] },
+    s:  { file: 'glove-s.png',  hotspot: [16, 30] },
+    sw: { file: 'glove-sw.png', hotspot: [6, 25] },
+    w:  { file: 'glove-w.png',  hotspot: [4, 14] },
+    nw: { file: 'glove-nw.png', hotspot: [6, 8] }
+  };
+
+  const clickStages = [
+    { file: 'click1st_stage.png', hotspot: [16, 16] },
+    { file: 'click2nd_stage.png', hotspot: [16, 16] }
+  ];
+
+  let currentDirection = 'e';
+  let clickTimeout;
+
+  document.addEventListener('mousemove', (e) => {
+  if (clickTimeout) return;
+
+  const centerX = window.innerWidth / 2;
+  const centerY = window.innerHeight / 2;
+  const dx = e.clientX - centerX;
+  const dy = e.clientY - centerY;
+  const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+
+  let dir = 'e';
+  if (angle >= -22.5 && angle < 22.5) dir = 'e';
+  else if (angle >= 22.5 && angle < 67.5) dir = 'se';
+  else if (angle >= 67.5 && angle < 112.5) dir = 's';
+  else if (angle >= 112.5 && angle < 157.5) dir = 'sw';
+  else if (angle >= 157.5 || angle < -157.5) dir = 'w';
+  else if (angle >= -157.5 && angle < -112.5) dir = 'nw';
+  else if (angle >= -112.5 && angle < -67.5) dir = 'n';
+  else if (angle >= -67.5 && angle < -22.5) dir = 'ne';
+
+  if (dir !== currentDirection) {
+    currentDirection = dir;
+    const { file, hotspot } = cursors[dir];
+    document.body.style.cursor = `url(${file}) ${hotspot[0]} ${hotspot[1]}, auto`;
+  }
+});
+
+
+  document.addEventListener('mousedown', () => {
+    if (clickTimeout) clearTimeout(clickTimeout);
+
+    const stage1 = clickStages[0];
+    document.body.style.cursor = `url(${stage1.file}) ${stage1.hotspot[0]} ${stage1.hotspot[1]}, auto`;
+
+    clickTimeout = setTimeout(() => {
+      const stage2 = clickStages[1];
+      document.body.style.cursor = `url(${stage2.file}) ${stage2.hotspot[0]} ${stage2.hotspot[1]}, auto`;
+    }, 100);
+  });
+
+  document.addEventListener('mouseup', () => {
+    clearTimeout(clickTimeout);
+    clickTimeout = null;
+
+    const { file, hotspot } = cursors[currentDirection];
+    document.body.style.cursor = `url(${file}) ${hotspot[0]} ${hotspot[1]}, auto`;
+  });
+</script>
+
 </body>
 </html>

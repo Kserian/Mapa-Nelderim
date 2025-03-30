@@ -17,6 +17,9 @@
       background: url('https://www.transparenttextures.com/patterns/old-map.png') repeat #0a0a0a;
       color: #f5f0e6;
       overflow: hidden;
+    }
+
+    body {
       cursor: inherit;
     }
   
@@ -83,7 +86,7 @@
       background-size: cover;
       border: none;
       outline: none;
-      cursor: pointer;
+      cursor: inherit !important;
     }
   
     #controls input[type="checkbox"]:checked {
@@ -133,6 +136,7 @@
       height: 100%;
       min-width: 0;
       transition: margin-left 0.4s ease; /* dla płynności */
+      cursor: inherit !important;
     }
 
     #coordsDisplay {
@@ -197,7 +201,7 @@
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
-      cursor: pointer;
+      cursor: inherit !important;
       display: inline-block;
       margin-left: 8px;
       transition: filter 0.2s ease, transform 0.3s ease; /* płynna animacja */
@@ -276,6 +280,14 @@
     .leaflet-popup {
       width: auto !important;
       max-width: none !important;
+    }
+
+    .leaflet-marker-icon,
+    .leaflet-popup-content,
+    .leaflet-popup-content-wrapper,
+    .leaflet-popup,
+    .leaflet-container * {
+      cursor: inherit !important;
     }
 
     #logoContainer {
@@ -367,6 +379,17 @@
       animation: pulse-glow 1.2s infinite ease-in-out;
     }
 
+    button,
+    input,
+    .toggle-button,
+    #sidebarToggle,
+    #zoomIn,
+    #zoomOut,
+    details summary {
+      cursor: inherit !important;
+    }
+
+
     @keyframes pulse-glow {
   0% {
     filter: drop-shadow(0 0 4px #b08e53);
@@ -383,6 +406,11 @@
   transition: filter 0.4s ease;
 }
 
+#logoContainer a,
+#logoContainer a img {
+  cursor: inherit !important;
+}
+
 #logoContainer a:hover img {
   filter: drop-shadow(0 0 8px #b08e53);
   cursor: pointer;
@@ -393,16 +421,15 @@
   cursor: inherit !important;
 }
 
-*{
-  cursor: inherit !important;
+*:not(input):not(textarea) {
+  cursor: inherit;
 }
 
-#searchBox,
 input[type="text"],
-textarea {
+textarea,
+#searchBox {
   cursor: url('text-cursor.png') 10 16, text !important;
 }
-
 
   </style>
 </head>
@@ -739,239 +766,80 @@ document.querySelectorAll('.ankh-toggle').forEach(cb => {
   });
 });
 
-document.getElementById('toggleCitiesBtn').addEventListener('click', () => {
-  const btn = document.getElementById('toggleCitiesBtn');
-  const group = document.getElementById('citiesSubgroup');
-  btn.classList.toggle('open');
-  const isNowOpen = btn.classList.contains('open');
+const subgroupStates = {
+  toggleCitiesBtn: { groupId: 'citiesSubgroup' },
+  toggleVillagesBtn: { groupId: 'villagesSubgroup' },
+  toggleDungeonsBtn: { groupId: 'dungeonsSubgroup' },
+  toggleHealersBtn: { groupId: 'healersSubgroup' },
+  toggleAnkhBtn: { groupId: 'ankhSubgroup' },
+};
 
-  // Usuń height: auto, jeśli było
-  group.style.height = getComputedStyle(group).height;
-  group.style.overflow = 'hidden';
+Object.entries(subgroupStates).forEach(([btnId, state]) => {
+  const btn = document.getElementById(btnId);
+  const group = document.getElementById(state.groupId);
 
-  if (isNowOpen) {
-    group.style.transition = `
-      height 1.0s ease,
-      padding 1.0s ease,
-      opacity 0.8s ease,
-      margin-top 0.8s ease
-    `;
-    group.style.opacity = '1';
-    group.style.paddingTop = '4px';
-    group.style.paddingBottom = '4px';
-    group.style.marginTop = '4px';
-    group.style.height = group.scrollHeight + 'px';
+  let currentTransitionEnd = null;
+  
+document.querySelectorAll('.control-row').forEach(row => {
+row.addEventListener('click', (e) => {
+    // Zignoruj kliknięcie w checkboxa – tylko klik w tekst lub tło ma działać
+    if (e.target.tagName === 'INPUT') return;
 
-    group.addEventListener('transitionend', function handler(e) {
-      if (e.propertyName === 'height') {
-        group.style.height = 'auto';
-        group.removeEventListener('transitionend', handler);
-      }
-    });
-  } else {
-    group.style.transition = `
-      height 0.7s ease,
-      padding 0.7s ease,
-      opacity 0.4s ease,
-      margin-top 0.4s ease
-    `;
-    group.style.height = group.scrollHeight + 'px';
-    requestAnimationFrame(() => {
-      group.style.height = '0';
-      group.style.opacity = '0';
-      group.style.paddingTop = '0';
-      group.style.paddingBottom = '0';
-      group.style.marginTop = '0';
-    });
-  }
+    const toggleBtn = row.querySelector('.toggle-button');
+    if (toggleBtn) toggleBtn.click(); // Symuluj kliknięcie przycisku rozwijania
+  });
 });
 
-document.getElementById('toggleDungeonsBtn').addEventListener('click', () => {
-  const btn = document.getElementById('toggleDungeonsBtn');
-  const group = document.getElementById('dungeonsSubgroup');
-  btn.classList.toggle('open');
-  const isNowOpen = btn.classList.contains('open');
+  btn.addEventListener('click', () => {
+    const isNowOpen = !btn.classList.contains('open');
+    btn.classList.toggle('open', isNowOpen);
 
-  // Zablokuj auto-height i ustaw overflow
-  group.style.height = getComputedStyle(group).height;
-  group.style.overflow = 'hidden';
+    // Przerwij bieżącą animację
+    group.style.transition = 'none';
+    group.style.height = getComputedStyle(group).height;
+    void group.offsetHeight;
 
-  if (isNowOpen) {
+    // Usuń poprzedni handler transitionend jeśli istnieje
+    if (currentTransitionEnd) {
+      group.removeEventListener('transitionend', currentTransitionEnd);
+      currentTransitionEnd = null;
+    }
+
+    // Włącz ponownie przejścia
     group.style.transition = `
-      height 1.0s ease,
-      padding 1.0s ease,
-      opacity 0.8s ease,
-      margin-top 0.8s ease
+      height ${isNowOpen ? '1.0s' : '0.7s'} ease,
+      padding ${isNowOpen ? '1.0s' : '0.7s'} ease,
+      opacity ${isNowOpen ? '0.8s' : '0.4s'} ease,
+      margin-top ${isNowOpen ? '0.8s' : '0.4s'} ease
     `;
-    group.style.opacity = '1';
-    group.style.paddingTop = '4px';
-    group.style.paddingBottom = '4px';
-    group.style.marginTop = '4px';
-    group.style.height = group.scrollHeight + 'px';
 
-    group.addEventListener('transitionend', function handler(e) {
-      if (e.propertyName === 'height') {
-        group.style.height = 'auto';
-        group.removeEventListener('transitionend', handler);
-      }
-    });
-  } else {
-    group.style.transition = `
-      height 0.7s ease,
-      padding 0.7s ease,
-      opacity 0.4s ease,
-      margin-top 0.4s ease
-    `;
-    group.style.height = group.scrollHeight + 'px';
-    requestAnimationFrame(() => {
+    if (isNowOpen) {
+      group.style.opacity = '1';
+      group.style.paddingTop = '4px';
+      group.style.paddingBottom = '4px';
+      group.style.marginTop = '4px';
+      group.style.height = group.scrollHeight + 'px';
+    } else {
+      group.style.height = group.scrollHeight + 'px';
+      void group.offsetHeight;
       group.style.height = '0';
       group.style.opacity = '0';
       group.style.paddingTop = '0';
       group.style.paddingBottom = '0';
       group.style.marginTop = '0';
-    });
-  }
-});
+    }
 
-document.getElementById('toggleVillagesBtn').addEventListener('click', () => {
-  const btn = document.getElementById('toggleVillagesBtn');
-  const group = document.getElementById('villagesSubgroup');
-  btn.classList.toggle('open');
-  const isNowOpen = btn.classList.contains('open');
-
-  // Usuń auto height i ustaw overflow
-  group.style.height = getComputedStyle(group).height;
-  group.style.overflow = 'hidden';
-
-  if (isNowOpen) {
-    group.style.transition = `
-      height 1.0s ease,
-      padding 1.0s ease,
-      opacity 0.8s ease,
-      margin-top 0.8s ease
-    `;
-    group.style.opacity = '1';
-    group.style.paddingTop = '4px';
-    group.style.paddingBottom = '4px';
-    group.style.marginTop = '4px';
-    group.style.height = group.scrollHeight + 'px';
-
-    group.addEventListener('transitionend', function handler(e) {
+    // Ustaw nowy handler
+    currentTransitionEnd = (e) => {
       if (e.propertyName === 'height') {
-        group.style.height = 'auto';
-        group.removeEventListener('transitionend', handler);
+        group.removeEventListener('transitionend', currentTransitionEnd);
+        if (isNowOpen) group.style.height = 'auto';
+        currentTransitionEnd = null;
       }
-    });
-  } else {
-    group.style.transition = `
-      height 0.7s ease,
-      padding 0.7s ease,
-      opacity 0.4s ease,
-      margin-top 0.4s ease
-    `;
-    group.style.height = group.scrollHeight + 'px';
-    requestAnimationFrame(() => {
-      group.style.height = '0';
-      group.style.opacity = '0';
-      group.style.paddingTop = '0';
-      group.style.paddingBottom = '0';
-      group.style.marginTop = '0';
-    });
-  }
-});
+    };
 
-document.getElementById('toggleHealersBtn').addEventListener('click', () => {
-  const btn = document.getElementById('toggleHealersBtn');
-  const group = document.getElementById('healersSubgroup');
-  btn.classList.toggle('open');
-  const isNowOpen = btn.classList.contains('open');
-
-  // Zablokuj auto height
-  group.style.height = getComputedStyle(group).height;
-  group.style.overflow = 'hidden';
-
-  if (isNowOpen) {
-    group.style.transition = `
-      height 1.0s ease,
-      padding 1.0s ease,
-      opacity 0.8s ease,
-      margin-top 0.8s ease
-    `;
-    group.style.opacity = '1';
-    group.style.paddingTop = '4px';
-    group.style.paddingBottom = '4px';
-    group.style.marginTop = '4px';
-    group.style.height = group.scrollHeight + 'px';
-
-    group.addEventListener('transitionend', function handler(e) {
-      if (e.propertyName === 'height') {
-        group.style.height = 'auto';
-        group.removeEventListener('transitionend', handler);
-      }
-    });
-  } else {
-    group.style.transition = `
-      height 0.7s ease,
-      padding 0.7s ease,
-      opacity 0.4s ease,
-      margin-top 0.4s ease
-    `;
-    group.style.height = group.scrollHeight + 'px';
-    requestAnimationFrame(() => {
-      group.style.height = '0';
-      group.style.opacity = '0';
-      group.style.paddingTop = '0';
-      group.style.paddingBottom = '0';
-      group.style.marginTop = '0';
-    });
-  }
-});
-
-document.getElementById('toggleAnkhBtn').addEventListener('click', () => {
-  const btn = document.getElementById('toggleAnkhBtn');
-  const group = document.getElementById('ankhSubgroup');
-  btn.classList.toggle('open');
-  const isNowOpen = btn.classList.contains('open');
-
-  // Zablokuj auto height
-  group.style.height = getComputedStyle(group).height;
-  group.style.overflow = 'hidden';
-
-  if (isNowOpen) {
-    group.style.transition = `
-      height 1.0s ease,
-      padding 1.0s ease,
-      opacity 0.8s ease,
-      margin-top 0.8s ease
-    `;
-    group.style.opacity = '1';
-    group.style.paddingTop = '4px';
-    group.style.paddingBottom = '4px';
-    group.style.marginTop = '4px';
-    group.style.height = group.scrollHeight + 'px';
-
-    group.addEventListener('transitionend', function handler(e) {
-      if (e.propertyName === 'height') {
-        group.style.height = 'auto';
-        group.removeEventListener('transitionend', handler);
-      }
-    });
-  } else {
-    group.style.transition = `
-      height 0.7s ease,
-      padding 0.7s ease,
-      opacity 0.4s ease,
-      margin-top 0.4s ease
-    `;
-    group.style.height = group.scrollHeight + 'px';
-    requestAnimationFrame(() => {
-      group.style.height = '0';
-      group.style.opacity = '0';
-      group.style.paddingTop = '0';
-      group.style.paddingBottom = '0';
-      group.style.marginTop = '0';
-    });
-  }
+    group.addEventListener('transitionend', currentTransitionEnd);
+  });
 });
 
 document.getElementById('toggleCitiesGroup').addEventListener('change', e => {
@@ -1143,27 +1011,37 @@ toggleBtn.addEventListener('click', () => {
 
 <script>
 
+const cursors = {
+  n:  { file: 'glove-n.png',  hotspot: [7, 1] },
+  ne: { file: 'glove-ne.png', hotspot: [28, 2] },
+  e:  { file: 'glove-e.png',  hotspot: [41, 9] },
+  se: { file: 'glove-se.png', hotspot: [35, 24] },
+  s:  { file: 'glove-s.png',  hotspot: [14, 32] },
+  sw: { file: 'glove-sw.png', hotspot: [2, 26] },
+  w:  { file: 'glove-w.png',  hotspot: [1, 9] },
+  nw: { file: 'glove-nw.png', hotspot: [1, 1] }
+};
 
-  const cursors = {
-    n:  { file: 'glove-n.png',  hotspot: [16, 4] },
-    ne: { file: 'glove-ne.png', hotspot: [25, 8] },
-    e:  { file: 'glove-e.png',  hotspot: [35, 14] },
-    se: { file: 'glove-se.png', hotspot: [25, 25] },
-    s:  { file: 'glove-s.png',  hotspot: [16, 30] },
-    sw: { file: 'glove-sw.png', hotspot: [6, 25] },
-    w:  { file: 'glove-w.png',  hotspot: [4, 14] },
-    nw: { file: 'glove-nw.png', hotspot: [6, 8] }
-  };
+const clickStages = [
+  { file: 'click1st_stage.png', hotspot: [1, 1] },
+  { file: 'click2nd_stage.png', hotspot: [1, 7] },
+  { file: 'click3rd_stage.png', hotspot: [4, 4] }
+];
 
-  const clickStages = [
-    { file: 'click1st_stage.png', hotspot: [16, 16] },
-    { file: 'click2nd_stage.png', hotspot: [16, 16] }
-  ];
+let currentDirection = 'nw';
+let clickTimeout = null;
+let clickHoldTimeout = null;
+let isClicking = false;
+let lastMouseX = 0;
+let lastMouseY = 0;
+const radius = 50;
 
-  let currentDirection = 'e';
-  let clickTimeout;
+// Domyślny kursor
+const { file, hotspot } = cursors['nw'];
+document.body.style.cursor = `url(${file}) ${hotspot[0]} ${hotspot[1]}, auto`;
 
-  document.addEventListener('mousemove', (e) => {
+// Obsługa kierunku
+document.addEventListener('mousemove', (e) => {
   if (clickTimeout) return;
 
   const centerX = window.innerWidth / 2;
@@ -1172,43 +1050,86 @@ toggleBtn.addEventListener('click', () => {
   const dy = e.clientY - centerY;
   const angle = Math.atan2(dy, dx) * (180 / Math.PI);
 
-  let dir = 'e';
-  if (angle >= -22.5 && angle < 22.5) dir = 'e';
-  else if (angle >= 22.5 && angle < 67.5) dir = 'se';
-  else if (angle >= 67.5 && angle < 112.5) dir = 's';
-  else if (angle >= 112.5 && angle < 157.5) dir = 'sw';
-  else if (angle >= 157.5 || angle < -157.5) dir = 'w';
-  else if (angle >= -157.5 && angle < -112.5) dir = 'nw';
-  else if (angle >= -112.5 && angle < -67.5) dir = 'n';
-  else if (angle >= -67.5 && angle < -22.5) dir = 'ne';
+  let dir = 'nw';
+  if (angle >= -10 && angle < 10) dir = 'e';
+  else if (angle >= 10 && angle < 60) dir = 'se';
+  else if (angle >= 60 && angle < 120) dir = 's';
+  else if (angle >= 120 && angle < 170) dir = 'sw';
+  else if (angle >= 170 || angle < -170) dir = 'w';
+  else if (angle >= -170 && angle < -120) dir = 'nw';
+  else if (angle >= -120 && angle < -60) dir = 'n';
+  else if (angle >= -60 && angle < -10) dir = 'ne';
 
   if (dir !== currentDirection) {
     currentDirection = dir;
     const { file, hotspot } = cursors[dir];
     document.body.style.cursor = `url(${file}) ${hotspot[0]} ${hotspot[1]}, auto`;
   }
+
+  lastMouseX = e.clientX;
+  lastMouseY = e.clientY;
 });
 
+document.addEventListener('mousedown', (e) => {
+  if (e.button !== 0) return; // tylko LPM
 
-  document.addEventListener('mousedown', () => {
-    if (clickTimeout) clearTimeout(clickTimeout);
+  const dx = Math.abs(e.clientX - lastMouseX);
+  const dy = Math.abs(e.clientY - lastMouseY);
+  const distance = Math.sqrt(dx * dx + dy * dy);
+
+  const radius = 500; // możesz zmienić np. na 20
+
+  if (distance > radius) {
+    console.log(`❌ Klik za daleko od hotspota (${Math.round(distance)}px)`);
+    // zablokuj klik
+    e.preventDefault();
+    e.stopPropagation();
+    return;
+  }
+
+  console.log(`✔ Klik w promieniu hotspota (${Math.round(distance)}px)`);
+
+  // jeśli w promieniu – pozwól kliknąć (np. checkbox działa)
+  isClicking = true;
+
+  // animacja – tylko jeśli LPM trzymany ≥ 500ms
+  clickHoldTimeout = setTimeout(() => {
+    if (!isClicking) return;
 
     const stage1 = clickStages[0];
+    const stage2 = clickStages[1];
+    const stage3 = clickStages[2];
+
     document.body.style.cursor = `url(${stage1.file}) ${stage1.hotspot[0]} ${stage1.hotspot[1]}, auto`;
 
     clickTimeout = setTimeout(() => {
-      const stage2 = clickStages[1];
       document.body.style.cursor = `url(${stage2.file}) ${stage2.hotspot[0]} ${stage2.hotspot[1]}, auto`;
-    }, 100);
-  });
 
-  document.addEventListener('mouseup', () => {
+      clickTimeout = setTimeout(() => {
+        document.body.style.cursor = `url(${stage3.file}) ${stage3.hotspot[0]} ${stage3.hotspot[1]}, auto`;
+      }, 70);
+    }, 70);
+
+  }, 300);
+});
+
+document.addEventListener('mouseup', () => {
+  isClicking = false;
+
+  if (clickHoldTimeout) {
+    clearTimeout(clickHoldTimeout);
+    clickHoldTimeout = null;
+  }
+
+  if (clickTimeout) {
     clearTimeout(clickTimeout);
     clickTimeout = null;
+  }
 
-    const { file, hotspot } = cursors[currentDirection];
-    document.body.style.cursor = `url(${file}) ${hotspot[0]} ${hotspot[1]}, auto`;
-  });
+  const { file, hotspot } = cursors[currentDirection];
+  document.body.style.cursor = `url(${file}) ${hotspot[0]} ${hotspot[1]}, auto`;
+});
+
 </script>
 
 </body>

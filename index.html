@@ -78,7 +78,8 @@
       gap: 6px;
     }
   
-    #controls input[type="checkbox"] {
+    #controls input[type="checkbox"],
+    input[type="checkbox"] {
       appearance: none;
       width: 20px;
       height: 20px;
@@ -88,8 +89,9 @@
       outline: none;
       cursor: inherit !important;
     }
-  
-    #controls input[type="checkbox"]:checked {
+
+    #controls input[type="checkbox"]:checked,
+    input[type="checkbox"]:checked {
       background-image: url('Gump 5828.png');
     }
   
@@ -176,22 +178,6 @@
         opacity 0.8s ease,
         margin-top 0.8s ease;
       }
-
-    .subgroup.expand {
-      height: auto;
-      opacity: 1;
-      padding-top: 4px;
-      padding-bottom: 4px;
-      margin-top: 4px;
-    }
-
-    .subgroup.collapse {
-      height: 0;
-      opacity: 0;
-      padding-top: 0;
-      padding-bottom: 0;
-      margin-top: 0;
-    }
   
     .toggle-button {
       width: 16px;
@@ -389,7 +375,6 @@
       cursor: inherit !important;
     }
 
-
     @keyframes pulse-glow {
   0% {
     filter: drop-shadow(0 0 4px #b08e53);
@@ -585,7 +570,7 @@ const toggleGroup = (btnId, subgroupId, open) => {
 };
 
 const cityIcon = L.icon({ iconUrl: 'Gump 30564.png', iconSize: [32, 32], iconAnchor: [16, 16] });
-const dungeonIcon = L.icon({ iconUrl: 'Gump 9804.png', iconSize: [32, 32], iconAnchor: [16, 16] });
+const dungeonIcon = L.icon({ iconUrl: 'Gump 9804.png', iconSize: [27, 20], iconAnchor: [13, 10] });
 const villageIcon = L.icon({ iconUrl: 'Gump 30565.png', iconSize: [28, 28], iconAnchor: [14, 14] });
 const healerIcon = L.icon({ iconUrl: 'Gump 30560.png', iconSize: [24, 24], iconAnchor: [12, 12] });
 const ankhIcon = L.icon({ iconUrl: 'Gump 30561.png', iconSize: [24, 24], iconAnchor: [12, 12] });
@@ -605,41 +590,44 @@ const citiesSubgroup = document.getElementById("citiesSubgroup");
 
 
 const dungeonData = {
-  alcala: [819, 232, "Alcala"],
-  baradDur: [960, 465, "Barad-dur"],
-  doom: [400, 319, "Doom"],
-  elghinn: [288, 1973, "Elghinn"],
-  garth: [397, 390, "Garth"],
-  hallTorech: [699, 1207, "Hall Torech"],
-  hurengrav: [457, 337, "Hurengrav"],
-  jaskiniaBlyskow: [711, 1131, "Jaskinia Błysków"],
-  kanalyTasandory: [697, 439, "Kanały Tasandory"],
-  krolewskieKrypty: [1171, 275, "Królewskie Krypty"],
-  krysztalowaJaskinia: [762, 1279, "Kryształowa Jaskinia"],
-  labirynt: [710, 930, "Labirynt"],
-  lezeKrysztalowychSmokow: [960, 124, "Leże Kryształowych Smoków"],
-  lezeLodowychSmokow: [1062, 133, "Leże Lodowych Smoków"],
-  lezeOgnistychSmokow: [738, 952, "Leże Ognistych Smoków"],
-  lezePluskwy: [597, 1315, "Leże Pluskwy"],
-  lezeTrolli: [884, 142, "Leże Trolli"],
-  lochBagusa: [957, 228, "Loch Bagusa"],
-  lochOphidian: [209, 685, "Loch Ophidian"],
-  loenTorech: [820, 1138, "Loen Torech"],
-  mechanicznaKrypta: [401, 825, "Mechaniczna Krypta"],
-  piramida: [568, 803, "Piramida"],
-  piaskoweKrypty: [396, 817, "Piaskowe Krypty"],
-  podziemiaSaew: [1149, 455, "Podziemia Saew"],
-  podziemiaSwiatyniSmierci: [764, 424, "Podziemia Świątyni Śmierci"],
-  pokracznyLoch: [1019, 1324, "Pokraczny Loch"],
-  ruinyElbrind: [1087, 508, "Ruiny Elbrind"],
-  saleParoxysmusa: [554, 2019, "Sale Paroxysmusa"],
-  siedliskoDemonow: [821, 1280, "Siedziba Demonów"],
-  tylReviaren: [533, 464, "Tyl Reviaren"],
-  twierdzaZwiednietejRozy: [816, 714, "Twierdza Zwiędniętej Róży"],
-  ulnhyrOrbben: [456, 521, "Ulnhyr Orbben"],
-  velkynAto: [110, 1813, "Velkyn Ato"],
-  wulkan: [935, 194, "Wulkan"]
+  alcala: [648, 1552, "Alcala"],
+  baradDur: [1396, 1229, "Barad-dur"],
+  doom: [955, 2888, "Doom"],
+  elghinn: [5914, 3227, "Elghinn"],
+  garth: [1170, 2898, "Garth"],
+  hallTorech: [3614, 1989, "Hall Torech"],
+  hurengrav: [1006, 2717, "Hurengrav"],
+  jaskiniaBlyskow: [3384, 1955, "Jaskinia Błysków"],
+  kanalyTasandory: [1311, 2000, "Kanały Tasandory"],
+  krolewskieKrypty: [823, 575, "Królewskie Krypty"],
+  krysztalowaJaskinia: [3384, 1954, "Kryształowa Jaskinia"],
+  labirynt: [2785, 1956, "Labirynt"],
+  lezeKrysztalowychSmokow: [370, 1204, "Leże Kryształowych Smoków"],
+  lezeLodowychSmokow: [394, 899, "Leże Lodowych Smoków"],
+  lezeOgnistychSmokow: [2850, 1876, "Leże Ognistych Smoków"],
+  lezePluskwy: [3942, 2299, "Leże Pluskwy"],
+  lezeTrolli: [421, 1427, "Leże Trolli"],
+  lochBagusa: [678, 1218, "Loch Bagusa"],
+  lochOphidian: [2053, 3462, "Loch Ophidian"],
+  loenTorech: [3409, 1629, "Loen Torech"],
+  mechanicznaKrypta: [2472, 2886, "Mechaniczna Krypta"],
+  piramida: [2407, 2383, "Piramida"],
+  piaskoweKrypty: [2448, 2903, "Piaskowe Krypty"],
+  podziemiaSaew: [1359, 645, "Podziemia Saew"],
+  podziemiaSwiatyniSmierci: [1256, 1795, "Podziemia Świątyni Śmierci"],
+  pokracznyLoch: [3972, 1047, "Pokraczny Loch"],
+  ruinyElbrind: [1524, 827, "Ruiny Elbrind"],
+  saleParoxysmusa: [6052, 2427, "Sale Paroxysmusa"],
+  siedzibaDemonow: [3827, 1625, "Siedziba Demonów"],
+  tylReviaren: [1386, 2491, "Tyl Reviaren"],
+  twierdzaZwiednietejRozy: [2130, 1639, "Twierdza Zwiędniętej Róży"],
+  ulnhyrOrbben: [1554, 2720, "Ulnhyr Orbben"],
+  velkynAto: [5441, 3759, "Velkyn Ato"],
+  wulkan: [579, 1284, "Wulkan"],
+  mrowisko: [3678, 1679, "Mrowisko"],
+  kryjowkaVoxPopuli: [4109, 3786, "Kryjówka Vox Populi"]
 };
+
 
 const customDungeons = {};
 const dungeonsSubgroup = document.getElementById("dungeonsSubgroup");
@@ -677,92 +665,45 @@ const ankhData = {
 const customAnkh = {};
 const ankhSubgroup = document.getElementById("ankhSubgroup");
 
+const categories = [
+  { data: cityData, markers: cityMarkers, icon: cityIcon, subgroup: citiesSubgroup, className: 'city-toggle' },
+  { data: dungeonData, markers: customDungeons, icon: dungeonIcon, subgroup: dungeonsSubgroup, className: 'dungeon-toggle' },
+  { data: villageData, markers: customVillages, icon: villageIcon, subgroup: villagesSubgroup, className: 'village-toggle' },
+  { data: healerData, markers: customHealers, icon: healerIcon, subgroup: healersSubgroup, className: 'healer-toggle' },
+  { data: ankhData, markers: customAnkh, icon: ankhIcon, subgroup: ankhSubgroup, className: 'ankh-toggle' }
+];
 
+categories.forEach(({ data, markers, icon, subgroup, className }) => {
+  Object.entries(data)
+    .sort((a, b) => a[1][2].localeCompare(b[1][2]))
+    .forEach(([id, [x, y, name]]) => {
+      const marker = L.marker([mapHeight - y, x], { icon }).bindPopup(name);
+      markers[id] = marker;
 
-Object.entries(cityData).sort((a, b) => a[1][2].localeCompare(b[1][2])).forEach(([id, [x, y, name]]) => {
-  const marker = L.marker([mapHeight - y, x],
- { icon: cityIcon }).bindPopup(name);
-  cityMarkers[id] = marker;
-
-  const label = document.createElement("label");
-  label.innerHTML = `<input type="checkbox" class="city-toggle" data-id="${id}"> ${name}`;
-  citiesSubgroup.appendChild(label);
+      const label = document.createElement("label");
+      label.innerHTML = `<input type="checkbox" class="${className}" data-id="${id}"> ${name}`;
+      subgroup.appendChild(label);
+    });
 });
 
+const toggleConfigs = [
+  { selector: '.city-toggle', markers: cityMarkers },
+  { selector: '.dungeon-toggle', markers: customDungeons },
+  { selector: '.village-toggle', markers: customVillages },
+  { selector: '.healer-toggle', markers: customHealers },
+  { selector: '.ankh-toggle', markers: customAnkh }
+];
 
-Object.entries(dungeonData).sort((a, b) => a[1][2].localeCompare(b[1][2])).forEach(([id, [x, y, name]]) => {
-  const marker = L.marker([mapHeight - y, x], { icon: dungeonIcon }).bindPopup(name);
-  customDungeons[id] = marker;
-  const label = document.createElement("label");
-  label.innerHTML = `<input type="checkbox" class="dungeon-toggle" data-id="${id}"> ${name}`;
-  dungeonsSubgroup.appendChild(label);
-});
-
-
-Object.entries(villageData).sort((a, b) => a[1][2].localeCompare(b[1][2])).forEach(([id, [x, y, name]]) => {
-  const marker = L.marker([mapHeight - y, x], { icon: villageIcon }).bindPopup(name);
-  customVillages[id] = marker;
-
-  const label = document.createElement("label");
-  label.innerHTML = `<input type="checkbox" class="village-toggle" data-id="${id}"> ${name}`;
-  villagesSubgroup.appendChild(label);
-});
-
-Object.entries(healerData).sort((a, b) => a[1][2].localeCompare(b[1][2])).forEach(([id, [x, y, name]]) => {
-  const marker = L.marker([mapHeight - y, x], { icon: healerIcon }).bindPopup(name);
-  customHealers[id] = marker;
-
-  const label = document.createElement("label");
-  label.innerHTML = `<input type="checkbox" class="healer-toggle" data-id="${id}"> ${name}`;
-  healersSubgroup.appendChild(label);
-});
-
-Object.entries(ankhData).sort((a, b) => a[1][2].localeCompare(b[1][2])).forEach(([id, [x, y, name]]) => {
-  const marker = L.marker([mapHeight - y, x], { icon: ankhIcon }).bindPopup(name);
-  customAnkh[id] = marker;
-
-  const label = document.createElement("label");
-  label.innerHTML = `<input type="checkbox" class="ankh-toggle" data-id="${id}"> ${name}`;
-  ankhSubgroup.appendChild(label);
-});
-
-document.querySelectorAll('.city-toggle').forEach(cb => {
-  cb.addEventListener('change', e => {
-    const id = e.target.dataset.id;
-    if (e.target.checked) cityMarkers[id].addTo(map);
-    else map.removeLayer(cityMarkers[id]);
-  });
-});
-
-document.querySelectorAll('.dungeon-toggle').forEach(cb => {
-  cb.addEventListener('change', e => {
-    const id = e.target.dataset.id;
-    if (e.target.checked) customDungeons[id].addTo(map);
-    else map.removeLayer(customDungeons[id]);
-  });
-});
-
-document.querySelectorAll('.village-toggle').forEach(cb => {
-  cb.addEventListener('change', e => {
-    const id = e.target.dataset.id;
-    if (e.target.checked) customVillages[id].addTo(map);
-    else map.removeLayer(customVillages[id]);
-  });
-});
-
-document.querySelectorAll('.healer-toggle').forEach(cb => {
-  cb.addEventListener('change', e => {
-    const id = e.target.dataset.id;
-    if (e.target.checked) customHealers[id].addTo(map);
-    else map.removeLayer(customHealers[id]);
-  });
-});
-
-document.querySelectorAll('.ankh-toggle').forEach(cb => {
-  cb.addEventListener('change', e => {
-    const id = e.target.dataset.id;
-    if (e.target.checked) customAnkh[id].addTo(map);
-    else map.removeLayer(customAnkh[id]);
+toggleConfigs.forEach(({ selector, markers }) => {
+  document.querySelectorAll(selector).forEach(cb => {
+    cb.addEventListener('change', e => {
+      const id = e.target.dataset.id;
+      if (e.target.checked) {
+        markers[id].addTo(map);
+      } else {
+        map.removeLayer(markers[id]);
+      }
+    });
   });
 });
 
@@ -779,20 +720,13 @@ Object.entries(subgroupStates).forEach(([btnId, state]) => {
   const group = document.getElementById(state.groupId);
 
   let currentTransitionEnd = null;
-  
-document.querySelectorAll('.control-row').forEach(row => {
-row.addEventListener('click', (e) => {
-    // Zignoruj kliknięcie w checkboxa – tylko klik w tekst lub tło ma działać
-    if (e.target.tagName === 'INPUT') return;
 
-    const toggleBtn = row.querySelector('.toggle-button');
-    if (toggleBtn) toggleBtn.click(); // Symuluj kliknięcie przycisku rozwijania
-  });
-});
 
-  btn.addEventListener('click', () => {
-    const isNowOpen = !btn.classList.contains('open');
-    btn.classList.toggle('open', isNowOpen);
+  btn.addEventListener('click', (e) => {
+  e.stopPropagation(); //  zatrzymuje kliknięcie, by nie leciało dalej
+
+  const isNowOpen = !btn.classList.contains('open');
+  btn.classList.toggle('open', isNowOpen);
 
     // Przerwij bieżącą animację
     group.style.transition = 'none';
@@ -840,47 +774,38 @@ row.addEventListener('click', (e) => {
 
     group.addEventListener('transitionend', currentTransitionEnd);
   });
-});
 
-document.getElementById('toggleCitiesGroup').addEventListener('change', e => {
-  const checked = e.target.checked;
-  document.querySelectorAll('.city-toggle').forEach(cb => {
-    cb.checked = checked;
-    cb.dispatchEvent(new Event('change'));
+  document.querySelectorAll('.control-row').forEach(row => {
+  row.addEventListener('click', (e) => {
+    if (e.target.tagName === 'INPUT') return;
+    const toggleBtn = row.querySelector('.toggle-button');
+    if (toggleBtn) toggleBtn.click();
   });
 });
 
-document.getElementById('toggleDungeonsGroup').addEventListener('change', e => {
-  const checked = e.target.checked;
-  document.querySelectorAll('.dungeon-toggle').forEach(cb => {
-    cb.checked = checked;
-    cb.dispatchEvent(new Event('change'));
+});
+
+const groupToggles = [
+  { groupId: 'toggleCitiesGroup', className: '.city-toggle' },
+  { groupId: 'toggleDungeonsGroup', className: '.dungeon-toggle' },
+  { groupId: 'toggleVillagesGroup', className: '.village-toggle' },
+  { groupId: 'toggleHealersGroup', className: '.healer-toggle' },
+  { groupId: 'toggleAnkhGroup', className: '.ankh-toggle' }
+];
+
+groupToggles.forEach(({ groupId, className }) => {
+  const groupCheckbox = document.getElementById(groupId);
+  if (!groupCheckbox) return;
+
+  groupCheckbox.addEventListener('change', (e) => {
+    const checked = e.target.checked;
+    document.querySelectorAll(className).forEach(cb => {
+      cb.checked = checked;
+      cb.dispatchEvent(new Event('change'));
+    });
   });
 });
 
-document.getElementById('toggleVillagesGroup').addEventListener('change', e => {
-  const checked = e.target.checked;
-  document.querySelectorAll('.village-toggle').forEach(cb => {
-    cb.checked = checked;
-    cb.dispatchEvent(new Event('change'));
-  });
-});
-
-document.getElementById('toggleHealersGroup').addEventListener('change', e => {
-  const checked = e.target.checked;
-  document.querySelectorAll('.healer-toggle').forEach(cb => {
-    cb.checked = checked;
-    cb.dispatchEvent(new Event('change'));
-  });
-});
-
-document.getElementById('toggleAnkhGroup').addEventListener('change', e => {
-  const checked = e.target.checked;
-  document.querySelectorAll('.ankh-toggle').forEach(cb => {
-    cb.checked = checked;
-    cb.dispatchEvent(new Event('change'));
-  });
-});
 
 map.on('mousemove', e => {
   const x = Math.round(e.latlng.lng);
@@ -892,7 +817,6 @@ map.on('mousemove', e => {
   </div>
 `;
 });
-
 
 // Zapamiętywanie stanu checkboxów
 const saveState = () => {
@@ -1006,11 +930,9 @@ toggleBtn.addEventListener('click', () => {
   localStorage.setItem('sidebarCollapsed', collapsed);
   setTimeout(() => map.invalidateSize(), 400);
 });
-
 </script>
 
 <script>
-
 const cursors = {
   n:  { file: 'glove-n.png',  hotspot: [7, 1] },
   ne: { file: 'glove-ne.png', hotspot: [28, 2] },
@@ -1080,7 +1002,7 @@ document.addEventListener('mousedown', (e) => {
   const radius = 500; // możesz zmienić np. na 20
 
   if (distance > radius) {
-    console.log(`❌ Klik za daleko od hotspota (${Math.round(distance)}px)`);
+    console.log(`Klik za daleko od hotspota (${Math.round(distance)}px)`);
     // zablokuj klik
     e.preventDefault();
     e.stopPropagation();

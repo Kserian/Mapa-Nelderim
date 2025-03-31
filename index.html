@@ -963,30 +963,26 @@ const loadState = () => {
 
 
 window.addEventListener('load', function () {
-  loadCustomPins(); 
-  loadState();      
+loadCustomPins();
+loadState();
 
-  document.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
-    cb.addEventListener('change', saveState);
-  });
+document.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
+  cb.addEventListener('change', saveState);
+ });
 
-    // Opóźnione uruchomienie getPinFromURL ze sprawdzeniem gotowości DOM
-  let retries = 0;
-  function safeGetPinFromURL() {
-    const customPinsSubgroup = document.getElementById('customPinsSubgroup');
-    if (!customPinsSubgroup || retries > 10) {
-      getPinFromURL();
-      return;
-    }
-    if (customPinsSubgroup.childElementCount > 0 || retries === 10) {
-      getPinFromURL();
-    } else {
-      retries++;
-      setTimeout(safeGetPinFromURL, 100);
-    }
-  }
+  // Gwarancja: getPinFromURL uruchomi się dopiero, gdy customPinsSubgroup ma zawartość
+const waitForPinsReady = () => {
+  const subgroup = document.getElementById('customPinsSubgroup');
+  if (subgroup && subgroup.children.length > 0) {
+    getPinFromURL();
+  } else {
+    setTimeout(waitForPinsReady, 50);
+   }
+ };
 
-  setTimeout(safeGetPinFromURL, 200);
+  // Start po minimalnym czasie na przetworzenie DOM
+setTimeout(waitForPinsReady, 100);
+
 
 });
 

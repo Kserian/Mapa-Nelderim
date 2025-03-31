@@ -942,7 +942,7 @@ map.on('mousemove', e => {
 });
 
 // Zapamiętywanie stanu checkboxów
-/*const saveState = () => {
+const saveState = () => {
   const states = {};
   document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
     states[cb.dataset.id || cb.id] = cb.checked;
@@ -959,12 +959,12 @@ const loadState = () => {
       el.dispatchEvent(new Event('change'));
     }
   });
-};*/
+};
 
 
 window.addEventListener('load', function () {
   loadCustomPins(); 
-  //loadState();      
+  loadState();      
   document.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
     cb.addEventListener('change', saveState);
   });
@@ -997,33 +997,30 @@ const allSubgroups = [
 document.getElementById('searchBox').addEventListener('input', function () {
   const query = this.value.toLowerCase();
 
-  /*
-if (query === '') {
-  // 1. Pokaż wszystkie etykiety
-  document.querySelectorAll('#controls label').forEach(label => {
-    label.style.display = 'flex';
-  });
+  if (query === '') {
+    // 1. Pokaż wszystkie etykiety
+    document.querySelectorAll('#controls label').forEach(label => {
+      label.style.display = 'flex';
+    });
 
-  // 2. ZWIŃ wszystkie grupy na sztywno
-  allSubgroups.forEach(({ btn, group }) => {
-    const btnEl = document.getElementById(btn);
-    const groupEl = document.getElementById(group);
+    // 2. ZWIŃ wszystkie grupy na sztywno
+    allSubgroups.forEach(({ btn, group }) => {
+      const btnEl = document.getElementById(btn);
+      const groupEl = document.getElementById(group);
 
-    // Wymuszone zwinięcie grupy – bez animacji
-    btnEl.classList.remove('open');
-    groupEl.style.transition = 'none'; // usuń animację
-    groupEl.style.height = '0';
-    groupEl.style.opacity = '0';
-    groupEl.style.paddingTop = '0';
-    groupEl.style.paddingBottom = '0';
-    groupEl.style.marginTop = '0';
-    groupEl.style.overflow = 'hidden';
-  });
+      // Wymuszone zwinięcie grupy – bez animacji
+      btnEl.classList.remove('open');
+      groupEl.style.transition = 'none'; // usuń animację
+      groupEl.style.height = '0';
+      groupEl.style.opacity = '0';
+      groupEl.style.paddingTop = '0';
+      groupEl.style.paddingBottom = '0';
+      groupEl.style.marginTop = '0';
+      groupEl.style.overflow = 'hidden';
+    });
 
-  return;
-}
-*/
-
+    return;
+  }
 
   // FILTROWANIE wyników
   document.querySelectorAll('#controls label').forEach(label => {
@@ -1201,7 +1198,7 @@ map.on('contextmenu', function (e) {
   categories[categories.length - 1].markers[id] = marker;
 
   addCustomPinToSidebar(id, name, true);
-  //saveCustomPins();
+  saveCustomPins();
 });
 
 function createPopupContent(id, name) {
@@ -1237,7 +1234,7 @@ function addCustomPinToSidebar(id, name, checked) {
         map.removeLayer(marker);
       }
     }
-    //saveCustomPins();
+    saveCustomPins();
   });
 }
 
@@ -1258,7 +1255,7 @@ function editPin(id) {
     addCustomPinListeners();
   }
 
-  //saveCustomPins();
+  saveCustomPins();
 }
 
 function deletePin(id) {
@@ -1273,7 +1270,7 @@ function deletePin(id) {
     checkbox.parentElement.remove();
   }
 
-  //saveCustomPins();
+  saveCustomPins();
 }
 
 function sharePin(id) {
@@ -1344,7 +1341,7 @@ function saveCustomPins() {
 }
 
 function loadCustomPins() {
-  /*const saved = JSON.parse(localStorage.getItem('customPins') || '[]');
+  const saved = JSON.parse(localStorage.getItem('customPins') || '[]');
 
   saved.forEach(function (pin) {
     const marker = L.marker([pin.lat, pin.lng], {
@@ -1355,7 +1352,7 @@ function loadCustomPins() {
     categories[categories.length - 1].markers[pin.id] = marker;
 
     addCustomPinToSidebar(pin.id, pin.name, pin.visible);
-  });*/
+  });
 }
 
 function getPinFromURL() {
@@ -1376,7 +1373,7 @@ function getPinFromURL() {
       marker.addTo(map).openPopup();
       categories[categories.length - 1].markers[id] = marker;
       addCustomPinToSidebar(id, name, true);
-      //saveCustomPins();
+      saveCustomPins();
 
       // Zaznacz checkbox pinezki
       const input = document.querySelector(`.custom-pin-toggle[data-id="${id}"]`);

@@ -962,8 +962,9 @@ const loadState = () => {
 };
 
 window.addEventListener('load', function () {
-  loadState();
-  loadCustomPins(); // już wywoła getPinFromURL
+  loadCustomPins(); // ← najpierw ładujemy pinezki
+  getPinFromURL();  // ← dopiero teraz przetwarzamy URL
+  loadState();      // ← NA KOŃCU, żeby nie usunęło pinezki z mapy
   document.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
     cb.addEventListener('change', saveState);
   });
@@ -1358,7 +1359,7 @@ function getPinFromURL() {
   const y = parseInt(params.get('y'), 10);
 
   if (name && !isNaN(x) && !isNaN(y)) {
-    const id = 'shared-' + encodeURIComponent(name) + '-' + x + '-' + y;
+    const id = 'shared-' + name + '-' + x + '-' + y;
 
     if (!categories[categories.length - 1].markers[id]) {
       const latlng = [mapHeight - y, x];
@@ -1375,7 +1376,7 @@ function getPinFromURL() {
     setTimeout(() => {
       const cleanURL = location.origin + location.pathname;
       window.history.replaceState(null, '', cleanURL);
-    }, 500);
+    }, 1000);
   }
 }
 

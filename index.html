@@ -973,6 +973,7 @@ document.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
   // Gwarancja: getPinFromURL uruchomi się dopiero, gdy customPinsSubgroup ma zawartość
 const waitForPinsReady = () => {
   const subgroup = document.getElementById('customPinsSubgroup');
+  const ready = subgroup && subgroup.querySelector('input.custom-pin-toggle');
   if (subgroup && subgroup.children.length > 0) {
     getPinFromURL();
   } else {

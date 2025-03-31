@@ -962,9 +962,9 @@ const loadState = () => {
 };
 
 window.addEventListener('load', function () {
-  loadCustomPins(); // ← najpierw ładujemy pinezki
-  loadState();      // ← NA KOŃCU, żeby nie usunęło pinezki z mapy
-  getPinFromURL();
+  loadCustomPins(); // ← najpierw lokalne pinezki
+  getPinFromURL();  // ← potem ta z linku
+  loadState();      // ← dopiero teraz przywracamy stan checkboxów
   document.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
     cb.addEventListener('change', saveState);
   });
@@ -1390,6 +1390,7 @@ function getPinFromURL() {
         const cleanURL = location.origin + location.pathname;
         window.history.replaceState(null, '', cleanURL);
       }, 1000);
+
   }}
 }
 

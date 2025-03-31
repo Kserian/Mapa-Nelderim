@@ -970,10 +970,24 @@ window.addEventListener('load', function () {
     cb.addEventListener('change', saveState);
   });
 
-  // Większe opóźnienie dla kompatybilności z Operą
-  setTimeout(() => {
-    requestAnimationFrame(getPinFromURL);
-  }, 100);
+    // Opóźnione uruchomienie getPinFromURL ze sprawdzeniem gotowości DOM
+  let retries = 0;
+  function safeGetPinFromURL() {
+    const customPinsSubgroup = document.getElementById('customPinsSubgroup');
+    if (!customPinsSubgroup || retries > 10) {
+      getPinFromURL();
+      return;
+    }
+    if (customPinsSubgroup.childElementCount > 0 || retries === 10) {
+      getPinFromURL();
+    } else {
+      retries++;
+      setTimeout(safeGetPinFromURL, 100);
+    }
+  }
+
+  setTimeout(safeGetPinFromURL, 200);
+
 });
 
 

@@ -965,12 +965,15 @@ const loadState = () => {
 window.addEventListener('load', function () {
   loadCustomPins(); 
   loadState();      
+
   document.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
     cb.addEventListener('change', saveState);
   });
 
-  //  Odłóż getPinFromURL() na sam koniec renderowania, po 1 cyklu
-  setTimeout(getPinFromURL, 0);
+  // Większe opóźnienie dla kompatybilności z Operą
+  setTimeout(() => {
+    requestAnimationFrame(getPinFromURL);
+  }, 100);
 });
 
 

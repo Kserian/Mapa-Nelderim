@@ -955,11 +955,15 @@ const loadState = () => {
   Object.entries(saved).forEach(([key, value]) => {
     const el = document.querySelector(`[data-id="${key}"], #${key}`);
     if (el) {
+      if (window.__suppressLoadStateForId === (el.dataset.id || el.id)) {
+        return; // ❗ pomiń pinezkę dodaną z linku
+      }
       el.checked = value;
       el.dispatchEvent(new Event('change'));
     }
   });
 };
+
 
 window.addEventListener('load', function () {
   loadCustomPins(); // ← najpierw lokalne pinezki
@@ -1371,6 +1375,8 @@ function getPinFromURL() {
       categories[categories.length - 1].markers[id] = marker;
       addCustomPinToSidebar(id, name, true);
       saveCustomPins();
+      window.__suppressLoadStateForId = id;
+
 
       const input = document.querySelector(`.custom-pin-toggle[data-id="${id}"]`);
       if (input) {
@@ -1387,10 +1393,10 @@ function getPinFromURL() {
       document.getElementById('toggleCustomPinsBtn').classList.add('open');
 
       setTimeout(() => {
+        window.__suppressLoadStateForId = null;
         const cleanURL = location.origin + location.pathname;
         window.history.replaceState(null, '', cleanURL);
       }, 1000);
-
   }}
 }
 

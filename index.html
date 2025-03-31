@@ -1361,20 +1361,26 @@ function getPinFromURL() {
   if (name && !isNaN(x) && !isNaN(y)) {
     const id = 'shared-' + encodeURIComponent(name) + '-' + x + '-' + y;
 
-    if (categories[categories.length - 1].markers[id]) return;
+    if (!categories[categories.length - 1].markers[id]) {
+      const latlng = [mapHeight - y, x];
+      const marker = L.marker(latlng, {
+        icon: categories[categories.length - 1].icon
+      }).bindPopup(createPopupContent(id, name));
 
-    const latlng = [mapHeight - y, x];
-    const marker = L.marker(latlng, {
-      icon: categories[categories.length - 1].icon
-    }).bindPopup(createPopupContent(id, name));
+      marker.addTo(map).openPopup();
+      categories[categories.length - 1].markers[id] = marker;
+      addCustomPinToSidebar(id, name, true);
+      saveCustomPins();
+    }
 
-    marker.addTo(map).openPopup();
-    categories[categories.length - 1].markers[id] = marker;
-
-    addCustomPinToSidebar(id, name, true);
-    saveCustomPins(); // ← zapisujemy jako normalną pinezkę
+    // 🔄 Usuń parametry z URL i odśwież stronę
+    setTimeout(() => {
+      const cleanURL = location.origin + location.pathname;
+      window.location.replace(cleanURL);
+    }, 500); // dajemy chwilę na render
   }
 }
+
 
 
 </script>

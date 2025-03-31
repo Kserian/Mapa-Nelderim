@@ -963,8 +963,8 @@ const loadState = () => {
 
 window.addEventListener('load', function () {
   loadCustomPins(); // ← najpierw ładujemy pinezki
-  getPinFromURL();  // ← dopiero teraz przetwarzamy URL
   loadState();      // ← NA KOŃCU, żeby nie usunęło pinezki z mapy
+  getPinFromURL();
   document.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
     cb.addEventListener('change', saveState);
   });
@@ -1373,10 +1373,20 @@ function getPinFromURL() {
     saveCustomPins();
 
     // Kliknij checkbox grupy, jeśli był wyłączony
+    // Wymuś zaznaczenie grupy "Własne Lokacje"
     const groupCheckbox = document.getElementById('toggleCustomPinsGroup');
     if (groupCheckbox && !groupCheckbox.checked) {
-      groupCheckbox.click();
-    }
+      groupCheckbox.checked = true;
+
+  // ręcznie zaznacz wszystkie checkboxy z tej grupy i odpal im 'change'
+    document.querySelectorAll('.custom-pin-toggle').forEach(cb => {
+    cb.checked = true;
+    cb.dispatchEvent(new Event('change'));
+  });
+  // Automatycznie rozwiń grupę "Własne Lokacje"
+  toggleGroup('toggleCustomPinsBtn', 'customPinsSubgroup', true);
+  document.getElementById('toggleCustomPinsBtn').classList.add('open');
+}
 
     setTimeout(() => {
       const cleanURL = location.origin + location.pathname;

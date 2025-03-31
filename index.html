@@ -1367,26 +1367,24 @@ function getPinFromURL() {
         icon: categories[categories.length - 1].icon
       }).bindPopup(createPopupContent(id, name));
 
-      marker.addTo(map).openPopup();
+    marker.addTo(map).openPopup();
     categories[categories.length - 1].markers[id] = marker;
     addCustomPinToSidebar(id, name, true);
     saveCustomPins();
 
-    // Upewnij się, że grupa "Własne Lokacje" jest włączona
-    const customPinGroup = document.getElementById('toggleCustomPinsGroup');
-    if (customPinGroup && !customPinGroup.checked) {
-      customPinGroup.checked = true;
-      customPinGroup.dispatchEvent(new Event('change'));
-    }}
+    // Kliknij checkbox grupy, jeśli był wyłączony
+    const groupCheckbox = document.getElementById('toggleCustomPinsGroup');
+    if (groupCheckbox && !groupCheckbox.checked) {
+      groupCheckbox.click();
+    }
 
     setTimeout(() => {
       const cleanURL = location.origin + location.pathname;
       window.history.replaceState(null, '', cleanURL);
     }, 1000);
-  }
+
+  }}
 }
-
-
 
 </script>
 </body>

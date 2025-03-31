@@ -955,24 +955,23 @@ const loadState = () => {
   Object.entries(saved).forEach(([key, value]) => {
     const el = document.querySelector(`[data-id="${key}"], #${key}`);
     if (el) {
-      if (window.__suppressLoadStateForId === (el.dataset.id || el.id)) {
-        return; // ❗ pomiń pinezkę dodaną z linku
-      }
       el.checked = value;
       el.dispatchEvent(new Event('change'));
     }
   });
 };
 
-
 window.addEventListener('load', function () {
-  loadCustomPins(); // ← najpierw lokalne pinezki
-  getPinFromURL();  // ← potem ta z linku
-  loadState();      // ← dopiero teraz przywracamy stan checkboxów
+  loadCustomPins(); 
+  loadState();      
   document.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
     cb.addEventListener('change', saveState);
   });
+
+  //  Odłóż getPinFromURL() na sam koniec renderowania, po 1 cyklu
+  setTimeout(getPinFromURL, 0);
 });
+
 
 window.addEventListener('DOMContentLoaded', () => {
   const zoomInBtn = document.getElementById('zoomIn');
@@ -1353,7 +1352,6 @@ function loadCustomPins() {
 
     addCustomPinToSidebar(pin.id, pin.name, pin.visible);
   });
-  getPinFromURL();
 }
 
 function getPinFromURL() {
@@ -1375,15 +1373,15 @@ function getPinFromURL() {
       categories[categories.length - 1].markers[id] = marker;
       addCustomPinToSidebar(id, name, true);
       saveCustomPins();
-      window.__suppressLoadStateForId = id;
 
-
+      // Zaznacz checkbox pinezki
       const input = document.querySelector(`.custom-pin-toggle[data-id="${id}"]`);
       if (input) {
         input.checked = true;
         input.dispatchEvent(new Event('change'));
       }
 
+      // Upewnij się, że grupa "Własne Lokacje" jest zaznaczona i rozwinięta
       const groupCheckbox = document.getElementById('toggleCustomPinsGroup');
       if (groupCheckbox && !groupCheckbox.checked) {
         groupCheckbox.checked = true;
@@ -1392,13 +1390,15 @@ function getPinFromURL() {
       toggleGroup('toggleCustomPinsBtn', 'customPinsSubgroup', true);
       document.getElementById('toggleCustomPinsBtn').classList.add('open');
 
+      // Czyść URL po chwili
       setTimeout(() => {
-        window.__suppressLoadStateForId = null;
         const cleanURL = location.origin + location.pathname;
         window.history.replaceState(null, '', cleanURL);
       }, 1000);
-  }}
+    }
+  }
 }
+
 
 </script>
 </body>

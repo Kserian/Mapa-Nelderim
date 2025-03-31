@@ -1376,7 +1376,7 @@ function getPinFromURL() {
     // 🔄 Usuń parametry z URL i odśwież stronę
     setTimeout(() => {
       const cleanURL = location.origin + location.pathname;
-      window.location.replace(cleanURL);
+      window.location.href = cleanURL;
     }, 500); // dajemy chwilę na render
   }
 }

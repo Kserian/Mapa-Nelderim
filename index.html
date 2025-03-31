@@ -963,13 +963,11 @@ const loadState = () => {
 
 window.addEventListener('load', function () {
   loadState();
-  loadCustomPins();
-  getPinFromURL();
+  loadCustomPins(); // już wywoła getPinFromURL
   document.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
     cb.addEventListener('change', saveState);
   });
 });
-
 
 window.addEventListener('DOMContentLoaded', () => {
   const zoomInBtn = document.getElementById('zoomIn');
@@ -1350,6 +1348,7 @@ function loadCustomPins() {
 
     addCustomPinToSidebar(pin.id, pin.name, pin.visible);
   });
+  getPinFromURL();
 }
 
 function getPinFromURL() {

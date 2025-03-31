@@ -1354,7 +1354,7 @@ function loadCustomPins() {
 
 function getPinFromURL() {
   const params = new URLSearchParams(window.location.search);
-  const name = params.get('pin');
+  const name = decodeURIComponent(params.get('pin') || '');
   const x = parseInt(params.get('x'), 10);
   const y = parseInt(params.get('y'), 10);
 

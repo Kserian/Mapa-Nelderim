@@ -1373,11 +1373,10 @@ function getPinFromURL() {
       saveCustomPins();
     }
 
-    // 🔄 Usuń parametry z URL i odśwież stronę
     setTimeout(() => {
       const cleanURL = location.origin + location.pathname;
-      window.location.href = cleanURL;
-    }, 500); // dajemy chwilę na render
+      window.history.replaceState(null, '', cleanURL);
+    }, 500);
   }
 }
 
